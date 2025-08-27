@@ -27,7 +27,10 @@ export function formatError(error:any){
 
   }else if(error.name === 'PrismaClientKnownRequestError' && error.code === 'P2002'){
     //Handle Prisma error
+    const field = error.meta?.target ? error.meta.target[0] : 'Feild';
+    return `${field.charAt(0).toUpperCase()+ field.slice(1)} already exists`
   }else{
     //Handle other errors
+    return typeof error.message === 'string' ? error.message : JSON.stringify(error.message)
   }
 }
