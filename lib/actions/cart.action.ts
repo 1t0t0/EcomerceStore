@@ -7,4 +7,5 @@ export async function addItemToCart(data:CartItem){
         success: true,
         message:'Item added to cart'
     }
+    console.log(data)
 }
