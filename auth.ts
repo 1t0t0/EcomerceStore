@@ -54,19 +54,6 @@ export const config = {
         })
     ],
     callbacks: {
-        async session({session,user,trigger,token}:any){
-             //Set the user ID from the token
-            session.user.id = token.sub;
-            session.user.role = token.role;
-            session.user.name = token.name;
-
-
-            // If there is an update,set the user name
-            if(trigger === 'update') {
-                session.user.name = user.name
-            }
-            return session
-        },
         async jwt({token,user}:any){
 
             //If there is an update, set the user name
@@ -87,6 +74,22 @@ export const config = {
             }
             return token;
         },
+
+        async session({session,user,trigger,token}:any){
+             //Set the user ID from the token
+            session.user.id = token.sub;
+            session.user.role = token.role;
+            session.user.name = token.name;
+
+
+
+            // If there is an update,set the user name
+            if(trigger === 'update') {
+                session.user.name = user.name
+            }
+            return session
+        },
+        
         authorized({request,auth}: any) {
             // Check for session cart cookie
             if(!request.cookies.get('sessionCartId')){
