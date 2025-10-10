@@ -10,9 +10,10 @@ import { shippingAddressDefaultValues } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
+import { useForm,SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Loader } from "lucide-react";
+import { updateUserAddress } from "@/lib/actions/user.actions";
 
 const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
     const router = useRouter();
@@ -23,8 +24,16 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
         defaultValues: address || shippingAddressDefaultValues,
     });
 
-    const onSubmit = (values) => {
-      console.log(values);
+    const onSubmit:SubmitHandler<z.infer<typeof shippingAddressSchema>> = async (values) => {
+        startTransition(async () => {
+            const res = await updateUserAddress(values);
+
+            if(!res.success) {
+                toast.error(res.message || 'Something went wrong');
+                return;
+            }
+            router.push('/payment-method');
+        })
 
       return;
     }
