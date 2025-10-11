@@ -91,7 +91,7 @@ export const config = {
 
                         //Assign new cart
                         await prisma.cart.updateMany({
-                            where:{id: sessionCartId},
+                            where:{id: sessionCart.id},
                             data:{userId: user.id}
                         })
                     }
