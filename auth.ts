@@ -54,10 +54,11 @@ export const config = {
         })
     ],
     callbacks: {
-        async jwt({token,user}:any){
+        async jwt({token,user,trigger}:any){
 
             //If there is an update, set the user name
             if(user){
+                token.id = user.id
                 token.role = user.role
 
                 //If user has no name then use the email
@@ -70,6 +71,30 @@ export const config = {
                         data:{name:token.name}
 
                     })
+                }
+
+                if(trigger === 'signIn' || trigger === 'signUp') {
+                    const cookiesObject = await cookies();
+                    const sessionCartId = cookiesObject.get('sessionCartId')?.value;
+
+                    if(sessionCartId){
+                        const sessionCart = await prisma.cart.findFirst({
+                            where:{sessionCartId}
+                        })
+
+                        if(sessionCart){
+                            //Delete current user cart
+                            await prisma.cart.deleteMany({
+                                where:{userId:user.id}
+                            });
+                        }
+
+                        //Assign new cart
+                        await prisma.cart.updateMany({
+                            where:{id: sessionCartId},
+                            data:{userId: user.id}
+                        })
+                    }
                 }
             }
             return token;
