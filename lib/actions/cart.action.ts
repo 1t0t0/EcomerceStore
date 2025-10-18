@@ -7,7 +7,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/db/prisma";
 import { cartItemSchema, insertCartSchema } from "../validators";
 import { revalidatePath } from "next/cache";
-import { Prisma } from "@prisma/client";
+import type { InputJsonValue } from "@prisma/client/runtime/library";
 
 //Calculate cart prices
 const calcPrice = (items:CartItem[])=>{
@@ -96,11 +96,11 @@ export async function addItemToCart(data:CartItem){
                 cart.items.push(item);
             }
 
-            // Save to database
+            // Save to database - Cast to Prisma InputJsonValue array
             await prisma.cart.update({
                 where: {id: cart.id},
                 data:{
-                    items: cart.items as Prisma.CartUpdateitemsInput[],
+                    items: cart.items as InputJsonValue[],
                     ...calcPrice(cart.items as CartItem[])
                 }
             })
@@ -188,12 +188,12 @@ export async function removeItemFromCart(productId:string){
             (cart.items as CartItem[]).find((x) => x.productId === exist.productId)!.qty = exist.qty - 1;
         }
 
-        //Update cart in database
+        //Update cart in database - Cast to Prisma InputJsonValue array
         await prisma.cart.update({
             where: {id: cart.id},
             data:{
-                items: cart.items as Prisma.CartUpdateitemsInput[],
-                    ...calcPrice(cart.items as CartItem[])
+                items: cart.items as InputJsonValue[],
+                ...calcPrice(cart.items as CartItem[])
             }
         });
 

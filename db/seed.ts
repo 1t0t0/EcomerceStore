@@ -1,7 +1,7 @@
-import { PrismaClient } from "@/generated/prisma";
+import { PrismaClient } from "@prisma/client";
 import sampleData from "./sample-data";
 
-async function mani(){
+async function main(){
     const prisma = new PrismaClient()
     await prisma.product.deleteMany()
     await prisma.account.deleteMany()
@@ -15,4 +15,4 @@ async function mani(){
 
     console.log("Database seeded successfully!")
 }
-mani()
+main()
