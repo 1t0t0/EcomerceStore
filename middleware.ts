@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { getToken } from 'next-auth/jwt'
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Protected paths that require authentication
@@ -14,6 +15,22 @@ export function middleware(request: NextRequest) {
     /\/order(.*)/,
     /\/admin/,
   ]
+
+  // Check if current path is protected
+  const isProtectedPath = protectedPaths.some((pattern) => pattern.test(pathname))
+
+  // Get the token to check if user is authenticated
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  })
+
+  // If protected path and no token, redirect to sign-in
+  if (isProtectedPath && !token) {
+    const signInUrl = new URL('/sign-in', request.url)
+    signInUrl.searchParams.set('callbackUrl', pathname)
+    return NextResponse.redirect(signInUrl)
+  }
 
   // Check for session cart cookie
   if (!request.cookies.get('sessionCartId')) {
