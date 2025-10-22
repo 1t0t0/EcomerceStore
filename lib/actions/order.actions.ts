@@ -97,8 +97,10 @@ export async function getOrderById(orderId: string) {
         },
         include: {
             orderitems: true,
-            user:{select: {name: true, email:true}}
-        }
+            user:{
+                select: {name: true, email:true}
+            },
+        },
     })
 
     return convertToPlainObject(data)
