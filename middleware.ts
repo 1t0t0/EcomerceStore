@@ -22,7 +22,8 @@ export async function middleware(request: NextRequest) {
   // Get the token to check if user is authenticated
   const token = await getToken({
     req: request,
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET
+,
   })
 
   // If protected path and no token, redirect to sign-in
