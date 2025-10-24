@@ -44,7 +44,7 @@ const OrderDetailsTable = ({order,paypalClientId}: {order: Order, paypalClientId
         isDelivered,
         isPaid,
         paidAt,
-        deliveredAt
+        deliveredAt,
     } = order
 
     const PrintLoadingState = () => {
