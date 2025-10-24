@@ -35,7 +35,7 @@ const OrderDetailsTable = ({order,paypalClientId}: {order: Order, paypalClientId
     const {
         id,
         shippingAddress,
-        orderitems,
+        orderItems,
         itemsPrice,
         shippingPrice,
         taxPrice,
@@ -60,7 +60,7 @@ const OrderDetailsTable = ({order,paypalClientId}: {order: Order, paypalClientId
     }
 
     const handleCreatePaypalOrder = async () => {
-        const res = await createPaypalOrder(order.id)
+        const res = await createPaypalOrder(id)
 
         if(!res.success) {
             toast.error(res.message)
@@ -135,7 +135,7 @@ const OrderDetailsTable = ({order,paypalClientId}: {order: Order, paypalClientId
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {orderitems.map((item) => (
+                            {orderItems.map((item) => (
                                 <TableRow key={item.slug}>
                                     <TableCell>
                                         <Link 
