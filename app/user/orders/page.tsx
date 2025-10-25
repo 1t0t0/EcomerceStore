@@ -4,7 +4,7 @@ import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
 import Link from "next/link";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-export const medata: Metadata = {
+export const metadata: Metadata = {
     title: 'My Order'
 }
 
