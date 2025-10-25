@@ -54,6 +54,15 @@ const UserButton = async() => {
                         </Button>
                     </form>
                 </DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Link href='/user/profile' className="w-full">
+                User profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Link href='/user/orders' className="w-full">
+                Order History</Link>
+                </DropdownMenuItem>
+                
             </DropdownMenuContent>
         </DropdownMenu>
     </div> );
