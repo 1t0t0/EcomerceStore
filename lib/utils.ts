@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -21,13 +22,13 @@ export function formatNumberWithDecimal(num:number):string{
 export function formatError(error:any){
   if(error.name === 'ZodError'){
     //Handle Zod error
-    const feildErrors = Object.keys(error.errors).map((feild)=> error.errors[feild].message)
+    const fieldErrors = Object.keys(error.errors).map((field)=> error.errors[field].message)
 
-    return feildErrors.join('. ')
+    return fieldErrors.join('. ')
 
   }else if(error.name === 'PrismaClientKnownRequestError' && error.code === 'P2002'){
     //Handle Prisma error
-    const field = error.meta?.target ? error.meta.target[0] : 'Feild';
+    const field = error.meta?.target ? error.meta.target[0] : 'Field';
     return `${field.charAt(0).toUpperCase()+ field.slice(1)} already exists`
   }else{
     //Handle other errors
