@@ -1,25 +1,31 @@
-import { Metadata } from "next";
-import { getMyOrders } from "@/lib/actions/order.actions";
-import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
-import Link from "next/link";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { auth } from "@/auth";
 import Pagination from "@/components/shared/pagination";
 import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { getAllOrders } from "@/lib/actions/order.actions";
+import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
+import { Metadata } from "next";
+import Link from "next/link";
 
-export const metadata: Metadata = {
-    title: 'My Order'
+export const metadata:Metadata = {
+    title: 'Admin Orders',
 }
 
-const OrderPage = async (props: {searchParams: Promise<{ page: string }>}) => {
+const AdminOrdersPage = async (props: {
+    searchParams: Promise<{page: string}>
+}) => {
+    const { page = '1'} = await props.searchParams;
 
-    const { page } = await props.searchParams;
+    const session = await auth()
 
-    const orders = await getMyOrders({
-        page: Number(page) || 1
-    })
+    if(session?.user?.role !== 'admin') throw new Error('User is not authorized')
 
-    return ( 
-    <div className="space-y-2">
+    const orders = await getAllOrders({
+        page:Number(page),
+    });
+
+
+    return ( <div className="space-y-2">
         <h2 className="h2-bold">Orders</h2>
         <div className="overflow-x-auto">
             <Table>
@@ -48,7 +54,6 @@ const OrderPage = async (props: {searchParams: Promise<{ page: string }>}) => {
                                     Details
                                 </Link>
                                 </Button>
-                                {/* DELETE */}
                             </TableCell>
                         </TableRow>
                     )) }
@@ -60,8 +65,7 @@ const OrderPage = async (props: {searchParams: Promise<{ page: string }>}) => {
                 )
             }
         </div>
-    </div> 
-    );
+    </div>  );
 }
  
-export default OrderPage;
+export default AdminOrdersPage;
