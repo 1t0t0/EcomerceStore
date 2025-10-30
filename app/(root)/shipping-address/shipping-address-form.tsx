@@ -29,7 +29,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
             const res = await updateUserAddress(values);
 
             if(!res.success) {
-                toast.error(res.message || 'Something went wrong');
+                toast.error(res.message);
                 return;
             }
             router.push('/payment-method');
