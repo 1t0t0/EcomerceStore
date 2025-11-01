@@ -31,7 +31,7 @@ const AdminProductPage = async (props: {
         <div className="flex-between">
             <div className="h2-bold">Products</div>
             <Button asChild variant='default'>
-                <Link href='admin/product/create'>Create Product</Link>
+                <Link href='/admin/products/create'>Create Product</Link>
             </Button>
 
         </div>
@@ -58,7 +58,7 @@ const AdminProductPage = async (props: {
                             <TableCell>{product.rating}</TableCell>
                             <TableCell className="flex gap-1">
                                 <Button>
-                                    <Link href={`/admmin/products/${product.id}`}>Edit</Link>
+                                    <Link href={`/admin/products/${product.id}`}>Edit</Link>
                                 </Button>
                             <DeleteDialog id={product.id} action={deleteProduct}/>
                             </TableCell>
